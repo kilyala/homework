@@ -94,14 +94,12 @@ public class Main {
             x = sc.nextInt() - 1;
             y = sc.nextInt() - 1;
         } while (!isCellValid(x, y));
-
         map[y][x] = DOT_X;
     }
 
     public static boolean isCellValid(int x, int y) {
         if (x < 0 || x >= SIZE || y < 0 || y >= SIZE) return false;
         if (map[y][x] == DOT_EMPTY) return true;
-
         return false;
     }
 
@@ -121,9 +119,8 @@ public class Main {
         System.out.println();
         for (int i = 0; i < SIZE; i++) {
             System.out.print((i + 1) + " ");
-
             for (int j = 0; j < SIZE; j++) {
-                System.out.print(map[i][i] + " ");
+                System.out.print(map[i][j] + " ");
             }
             System.out.println();
         }

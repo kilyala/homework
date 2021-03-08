@@ -1,14 +1,15 @@
 package ru.geekbrains.lesson4.homework4;
 
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
 
     public static char[][] map;
-    public static final int SIZE = 3;
-    public static final int DOTS_TO_WIN = 3;
+    public static final int SIZE = 5;
+    public static final int DOTS_TO_WIN = 4;
 
     public static final char DOT_EMPTY = '*';
     public static final char DOT_X = 'X';
@@ -124,16 +125,75 @@ public class Main {
 
     public static void aiTurn() {
         int x,y;
-
-        do {
-            x = random.nextInt(SIZE);
-            y = random.nextInt(SIZE);
-        } while (!isCellValid(x, y));
+        int[] blockingXY = getBlockingXY();
+        System.out.println(Arrays.toString(blockingXY));
+        if (blockingXY.length == 2) {
+            y = blockingXY[0];
+            x = blockingXY[1];
+        } else {
+            do {
+                x = random.nextInt(SIZE);
+                y = random.nextInt(SIZE);
+            } while (!isCellValid(x, y));
+        }
 
         System.out.println("Компьютер походил в точку " + (x + 1) + " " + (y + 1));
         map[y][x] = DOT_0;
     }
 
+    public static int[] getBlockingXY() {
+        char symb = DOT_X;
+
+        int mainDiagonal = 0;
+        int sideDiagonal = 0;
+        int lastIndex = map.length - 1;
+        for (int i = 0; i < map.length; i++) {
+
+            int rowCount = 0;
+            int columnCount = 0;
+
+            for (int j = 0; j < map.length; j++) {
+
+                if (map[i][j] == symb && (++rowCount + 1) == DOTS_TO_WIN) {
+
+                    for (int l = 0; l < map.length; l++) {
+                        if (isCellValid(l,i)) {
+                            return new int[] {i, l};
+                        }
+                    }
+
+                }
+
+                if (map[j][i] == symb && (++columnCount + 1) == DOTS_TO_WIN) {
+
+                    for (int l = 0; l < map.length; l++) {
+                        if (isCellValid(i, l)) {
+                            return new int[] {l, i};
+                        }
+                    }
+
+                }
+            }
+
+            if (map[i][i] == symb && (++mainDiagonal +1) == DOTS_TO_WIN) {
+                for (int l = 0; l < map.length; l++) {
+                    if (isCellValid(l, l)) {
+                        return new int[] {l, l};
+                    }
+                }
+            }
+
+            if (map[i][lastIndex - i] == symb && (++sideDiagonal + 1) == DOTS_TO_WIN) {
+                for (int l = 0; l < map.length; l++) {
+                    if (isCellValid(lastIndex - l, l)) {
+                        return new int[] {l, lastIndex - l};
+                    }
+                }
+            }
+        }
+
+        return new int[0];
+    }
     public static void humanTurn() {
         int x,y;
 

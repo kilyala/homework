@@ -18,6 +18,10 @@ public class Main {
     public static Random random = new Random();
 
     public static void main(String[] args) {
+        if (DOTS_TO_WIN > SIZE || DOTS_TO_WIN < 2) {
+            System.err.println("Ошибка!");
+        }
+
         initMap();
         printMap();
 
@@ -63,15 +67,59 @@ public class Main {
     }
 
     public static boolean checkWin(char symb) {
-        if(map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
-        if(map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
-        if(map[2][0] == symb && map[2][1] == symb && map[2][2] == symb) return true;
-        if(map[0][0] == symb && map[1][0] == symb && map[2][0] == symb) return true;
-        if(map[0][1] == symb && map[1][1] == symb && map[2][1] == symb) return true;
-        if(map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
-        if(map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
-        if(map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;
+//        if(map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
+//        if(map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
+//        if(map[2][0] == symb && map[2][1] == symb && map[2][2] == symb) return true;
+//        if(map[0][0] == symb && map[1][0] == symb && map[2][0] == symb) return true;
+//        if(map[0][1] == symb && map[1][1] == symb && map[2][1] == symb) return true;
+//        if(map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
+//        if(map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
+//        if(map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;
+//        return false;
+        int lastIndex = map.length - 1;
+
+        int mainDiagonal = 0;
+        int sideDiagonal = 0;
+        for (int i = 0; i < map.length; i++) {
+
+            int rowCount = 0;
+            int columnCount = 0;
+
+            for (int j = 0; j < map.length; j++) {
+                if (map[i][j] == symb) {
+                    if (++rowCount == DOTS_TO_WIN) {
+                        return true;
+                    }
+                } else {
+                    rowCount = 0;
+                }
+
+                if (map[j][i] == symb) {
+                    if (++columnCount == DOTS_TO_WIN) {
+                        return true;
+                    }
+                } else {
+                    columnCount = 0;
+                }
+            }
+
+            mainDiagonal = getWinValue(i, i, mainDiagonal, symb);
+            sideDiagonal = getWinValue(i, lastIndex - i, sideDiagonal, symb);
+
+            if (mainDiagonal == DOTS_TO_WIN || sideDiagonal == DOTS_TO_WIN) {
+                return true;
+            }
+        }
+
         return false;
+    }
+
+    public static int getWinValue(int indRow, int indCol, int value, char symb) {
+        if (map[indRow][indCol] == symb) {
+            return value + 1;
+        }
+
+        return 0;
     }
 
     public static void aiTurn() {

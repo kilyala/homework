@@ -6,9 +6,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-
+//    Это не мой код, а ваш. Я более или менее разобрался что где и почему, но мне
+//    пока сложно в местах, где цикл в цикле в цикле (типа getBlockingXY). Нужно больше практики
+//    с менее комплексными заданиями, чтобы пришло осознанное понимание происходящего.
     public static char[][] map;
-    public static final int SIZE = 5;
+    public static final int SIZE = 4;
     public static final int DOTS_TO_WIN = 4;
 
     public static final char DOT_EMPTY = '*';
@@ -63,29 +65,17 @@ public class Main {
                 }
             }
         }
-
         return true;
     }
 
     public static boolean checkWin(char symb) {
-//        if(map[0][0] == symb && map[0][1] == symb && map[0][2] == symb) return true;
-//        if(map[1][0] == symb && map[1][1] == symb && map[1][2] == symb) return true;
-//        if(map[2][0] == symb && map[2][1] == symb && map[2][2] == symb) return true;
-//        if(map[0][0] == symb && map[1][0] == symb && map[2][0] == symb) return true;
-//        if(map[0][1] == symb && map[1][1] == symb && map[2][1] == symb) return true;
-//        if(map[0][2] == symb && map[1][2] == symb && map[2][2] == symb) return true;
-//        if(map[0][0] == symb && map[1][1] == symb && map[2][2] == symb) return true;
-//        if(map[2][0] == symb && map[1][1] == symb && map[0][2] == symb) return true;
-//        return false;
-        int lastIndex = map.length - 1;
 
+        int lastIndex = map.length - 1;
         int mainDiagonal = 0;
         int sideDiagonal = 0;
         for (int i = 0; i < map.length; i++) {
-
             int rowCount = 0;
             int columnCount = 0;
-
             for (int j = 0; j < map.length; j++) {
                 if (map[i][j] == symb) {
                     if (++rowCount == DOTS_TO_WIN) {
@@ -111,7 +101,6 @@ public class Main {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -119,7 +108,6 @@ public class Main {
         if (map[indRow][indCol] == symb) {
             return value + 1;
         }
-
         return 0;
     }
 
@@ -143,35 +131,28 @@ public class Main {
 
     public static int[] getBlockingXY() {
         char symb = DOT_X;
-
         int mainDiagonal = 0;
         int sideDiagonal = 0;
         int lastIndex = map.length - 1;
         for (int i = 0; i < map.length; i++) {
-
             int rowCount = 0;
             int columnCount = 0;
 
             for (int j = 0; j < map.length; j++) {
-
                 if (map[i][j] == symb && (++rowCount + 1) == DOTS_TO_WIN) {
-
                     for (int l = 0; l < map.length; l++) {
                         if (isCellValid(l,i)) {
                             return new int[] {i, l};
                         }
                     }
-
                 }
 
                 if (map[j][i] == symb && (++columnCount + 1) == DOTS_TO_WIN) {
-
                     for (int l = 0; l < map.length; l++) {
                         if (isCellValid(i, l)) {
                             return new int[] {l, i};
                         }
                     }
-
                 }
             }
 
@@ -191,7 +172,6 @@ public class Main {
                 }
             }
         }
-
         return new int[0];
     }
     public static void humanTurn() {
